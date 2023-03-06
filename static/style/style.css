@@ -1,0 +1,79 @@
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+  font-family: "Oswald", sans-serif;
+}
+
+body {
+  background-color: #202123;
+  color: white;
+}
+
+img {
+  position: inherit;
+  transform: scale(0.5);
+}
+
+a, a:hover, a:visited, a:active {
+  color: inherit;
+  text-decoration: none;
+}
+
+.container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+.container .box {
+  width: 500px;
+  padding: 10px 20px;
+  border: none;
+  text-align: left;
+  font-size: 20px;
+  background-color: #444654;
+}
+.container .box:nth-child(odd):not(input) {
+  background-color: #343541;
+}
+.container tr {
+  display: block;
+}
+.container form {
+  margin-bottom: 30px;
+}
+.container form input {
+  outline: none;
+  color: white;
+}
+.container table {
+  width: 500px;
+}
+
+.profile {
+  padding: 30px;
+}
+.profile .profile-info {
+  position: relative;
+  width: 750px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 20px;
+  line-height: 30px;
+  margin-bottom: 50px;
+}
+.profile .chart {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.profile .chart .chart-container {
+  display: inline;
+  width: 750px;
+}
+.profile .chart .chart-container canvas {
+  background-color: #1c1c25;
+}/*# sourceMappingURL=style.css.map */
