@@ -3,8 +3,6 @@ import os, re
 import requests
 from bs4 import BeautifulSoup
 
-from cohostforce.items import ProblemItem
-
 class ProblemSpider(scrapy.Spider):
 
     name = "problem"
