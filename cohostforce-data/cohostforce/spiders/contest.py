@@ -25,20 +25,21 @@ def get_title(rating):
         return 'Legendary Grandmaster'
 
 
+
 class ContestSpider(scrapy.Spider):
 
-    name = "demo"
+    name = "contest"
     allowed_domain = "https://codeforces.com"
     start_urls = []
 
     def start_requests(self):
-        contests_number = 639
-        for page_id in range(1, contests_number):
+        pages_number = 639
+        for page_id in range(1, pages_number):
             url = f"https://codeforces.com/ratings/page/{page_id}"
+
             self.start_urls.append(url)
 
         for url in self.start_urls:
-            print(url)
             yield scrapy.Request(url=url, callback=self.access_user_href)
 
     def access_user_href(self, response):
@@ -54,9 +55,6 @@ class ContestSpider(scrapy.Spider):
 
     def parse(self, response):
         string = str(response)
-
-        with open('urls.txt', 'a+') as f:
-            f.write(string + '\n')
 
         string = string.replace('<200 https://codeforces.com/contests/with/', '')
         string = string.replace('>', '')
@@ -83,11 +81,12 @@ class ContestSpider(scrapy.Spider):
 
             table_values.append(columns_data)
 
+        user_contest_url = 'data/info/contest_info/' + username + '.csv'
+        with open(user_contest_url, 'a'): # create new file
+            os.utime(user_contest_url, None)
 
-        with open('data/' + username + '.csv', 'a+') as f_object:
+        with open(user_contest_url, 'w+') as f_object:
             dictwriter_object = writer(f_object)
             dictwriter_object.writerow(table_keys)
             for value in table_values:
                 dictwriter_object.writerow(value)
-
-        yield table
