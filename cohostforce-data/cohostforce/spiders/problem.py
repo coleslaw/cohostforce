@@ -10,8 +10,8 @@ class ProblemSpider(scrapy.Spider):
     start_urls = []
 
     def start_requests(self):
-        pages_number = 2
-        for page_id in range(1, pages_number):
+        pages_number = 86
+        for page_id in range(85, pages_number):
             url = f"https://codeforces.com/problemset/page/{page_id}"
             self.start_urls.append(url)
 
@@ -26,9 +26,8 @@ class ProblemSpider(scrapy.Spider):
             yield scrapy.Request(url=url, callback=self.parse)
 
     def parse(self, response):
-
         problem_name = response.css("#pageContent div.problemindexholder div.ttypography div div.header div.title::text").get()
-        contest_name = response.css("#sidebar div:nth-child(1) table tbody tr:nth-child(1) th a::text").get()
+        contest_name = response.css("#sidebar div table tbody tr:nth-child(1) th a::text").get()
 
         statement = response.css("#pageContent div.problemindexholder div.ttypography div div").getall()
 
@@ -38,25 +37,19 @@ class ProblemSpider(scrapy.Spider):
         for id in range(len(statement)):
             html = statement[id]
             sep = '\n'
+
             soup = BeautifulSoup(html)
+            for img in soup.find_all('img'):
+                src = img['src']
+                img.replace_with(src)
+
             add_text = soup.get_text(separator=sep, strip=True)
+
             if not(add_text in text):
                 text = text + add_text + '\n'
 
-        problem_name = problem_name.replace('.', '_')
-        problem_name = problem_name.replace(' ', '_')
-        problem_name = problem_name + '.txt'
-
-
-
-        '''header_url = 'data/contests/' + contest_name
-        if not os.path.exists(header_url):
-            os.makedirs(header_url)
-        total_url = os.path.join(header_url, problem_name)
-        with open(total_url, 'w') as f:
-            f.write(text)'''
-
         yield {
+            "Contest name": contest_name,
             "Problem name": problem_name,
             "Description": text
         }
