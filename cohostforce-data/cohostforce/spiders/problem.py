@@ -10,8 +10,8 @@ class ProblemSpider(scrapy.Spider):
     start_urls = []
 
     def start_requests(self):
-        pages_number = 86
-        for page_id in range(85, pages_number):
+        pages_number = 85
+        for page_id in range(1, pages_number + 1):
             url = f"https://codeforces.com/problemset/page/{page_id}"
             self.start_urls.append(url)
 
