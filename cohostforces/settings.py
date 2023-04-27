@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.humanize',
     'online_site',
+    'coverage',
 ]
 
 MIDDLEWARE = [
