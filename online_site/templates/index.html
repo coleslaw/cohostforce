@@ -4,21 +4,24 @@
 
 {% block body %}
     <div class="container">
-        <form method="get" class="search-bar" action="{% url 'main_site' %}" >
+        <form method="get" class="search-bar" action="{% url 'main_site' %}">
             {% csrf_token %}
             {% if keyword %}
-                <input type="text" placeholder="Search user" class="box" name="keyword" value="{{keyword}}">
+                <input type="text" placeholder="Search user" class="box" name="keyword" value="{{ keyword }}">
             {% else %}
                 <input type="text" placeholder="Search user" class="box" name="keyword">
             {% endif %}
         </form>
         <table>
-            <tr class="box" >
+            <tr class="box">
                 <th>Username</th>
             </tr>
             {% for profile in object_list %}
-                <tr class="box" >
-                    <td><a href="{% url 'detail_site' pk=profile.id %}">{{profile}}</a></td>
+                <tr class="box">
+                    <td>
+                        <a href="{% url 'detail_profile' name=profile.source.name %}">
+                            <div>{{profile.source.name}}</div>
+                        </a></td>
                 </tr>
             {% endfor %}
         </table>

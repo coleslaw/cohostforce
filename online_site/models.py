@@ -1,7 +1,8 @@
 from django.db import models
+from elasticsearch_dsl import Document, Text, InnerDoc, Integer, Object
+from elasticsearch_dsl.connections import connections
 
 # Create your models here.
-
 
 class Profile(models.Model):
     name = models.CharField(verbose_name="name", max_length=255)

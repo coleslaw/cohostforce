@@ -6,16 +6,16 @@
 {% block body %}
     <div class="profile">
         <div class="profile-info">
-            <div class="name">Name: {{object.name}}</div>
+            <div class="name">Name: <a href="https://codeforces.com/profile/{{ object.name }}" > {{object.name}}</a> </div>
             <div class="rating">Rating: {{object.rating}}</div>
             <div class="title">Title: {{object.title}} <span> ( max, {{object.best_title}} , {{object.max_rating}} ) </span> </div>
         </div>
         <div class="chart">
             <div class="chart-container">
-                <canvas id="result-chart"></canvas>
+                <canvas id="result-chart">{{ contest_results|json_script:"contest_results" }}</canvas>
             </div>
         </div>
     </div>
     <!-- <a href="{% url 'main_site' %}" style="font-size:20px;" >View previous page</a> -->
-    {{ contest_results|json_script:"contest_results" }}
+    <!-- {{ contest_results|json_script:"contest_results" }} -->
 {% endblock %}
