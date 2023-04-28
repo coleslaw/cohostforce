@@ -21,39 +21,39 @@ def my_func(**kwargs):
         print(f"{key}: {value}")
 
 
-'''class ProfileList(ListView):
-    model = Profile
-    template_name = "index.html"
+# class ProfileList(ListView):
+#     model = Profile
+#     template_name = "index.html"
+#
+#     def get_queryset(self):
+#         queryset = super().get_queryset()
+#         keyword = self.request.GET.get('keyword',None)
+#         if keyword:
+#             queryset = Profile.objects.filter(name__icontains=keyword).order_by('name')
+#         print(queryset)
+#         return queryset
+#
+#     def get_context_data(self, **kwargs):
+#         context = super().get_context_data(**kwargs)
+#         context['keyword'] = self.request.GET.get('keyword')
+#         return context
+#
+#     def post(self, request , *args, **kwargs):
+#         pass
 
-    def get_queryset(self):
-        queryset = super().get_queryset()
-        keyword = self.request.GET.get('keyword',None)
-        if keyword:
-            queryset = Profile.objects.filter(name__icontains=keyword).order_by('name')
-        print(queryset)
-        return queryset
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['keyword'] = self.request.GET.get('keyword')
-        return context
-    
-    def post(self, request , *args, **kwargs):
-        pass    
-'''
 
 
-class DetailProfile(DetailView):
-    model = Profile
-    template_name = 'profile.html'
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['contest_results'] = list(self.object.contests.all().values('name',
-                                                                            'rating_change', 'new_rating',
-                                                                            'title_change'))
-        print(context)
-        return context
+# class DetailProfile(DetailView):
+#     model = Profile
+#     template_name = 'profile.html'
+#
+#     def get_context_data(self, **kwargs):
+#         context = super().get_context_data(**kwargs)
+#         context['contest_results'] = list(self.object.contests.all().values('name',
+#                                                                             'rating_change', 'new_rating',
+#                                                                             'title_change'))
+#         print(context)
+#         return context
 
 
 def getDetailProfile(request, name):
@@ -94,16 +94,17 @@ def getDetailProfile(request, name):
 class ProfileList(ListView):
     model = Profile
     template_name = "index.html"
-
     def get_queryset(self):
         queryset = []
         keyword = self.request.GET.get('keyword', "")
         es = Elasticsearch()
-        query_dict = {
+        keyword = keyword.replace("-",r"\-")
+        query_dict = query_dict = {
             "size": 10000,
             "query": {
-                "wildcard": {
-                    "name": "*" + keyword + "*"
+                "query_string": {
+                    "query": "*" + keyword + "*",
+                    "fields": ["name"]
                 }
             }
         }
@@ -115,24 +116,7 @@ class ProfileList(ListView):
             old_key_result = result.pop("_source")
             result["source"] = old_key_result
         queryset = results
-
-        '''data = json.loads(result)
-        print(len(result["hits"]["hits"]))
-        for hit in result["hits"]["hits"]:
-            obj = Profile()
-            obj.name = hit['_source']['name']
-            obj.rating = hit['_source']['rating']
-            obj.max_rating = hit['_source']['max_rating']
-            obj.best_title = hit['_source']['best_title']
-        queryset = Profile.objects.from_queryset([Profile(**item) for item in result])'''
-        '''queryset = super().get_queryset()
-        if keyword:
-            queryset = Profile.objects.filter(name__icontains=keyword).order_by('name')'''
-        '''queryset=[
-            {"name" : "okeoke","id": 1},{"name":"chubedan","id":2}
-        ]'''
         return queryset
-
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['keyword'] = self.request.GET.get('keyword')
