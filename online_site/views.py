@@ -42,7 +42,6 @@ def my_func(**kwargs):
 #         pass
 
 
-
 # class DetailProfile(DetailView):
 #     model = Profile
 #     template_name = 'profile.html'
@@ -58,7 +57,7 @@ def my_func(**kwargs):
 
 def getDetailProfile(request, name):
     es = Elasticsearch()
-    query_dict ={
+    query_dict = {
         "size": 10000,
         "query":
             {
@@ -70,7 +69,7 @@ def getDetailProfile(request, name):
     }
     result = es.search(index="contest_results", body=query_dict)
     results = result["hits"]["hits"]
-    context = {"contest_results":[]}
+    context = {"contest_results": []}
 
     for result in results:
         old_key_result = result.pop("_source")
@@ -86,19 +85,21 @@ def getDetailProfile(request, name):
     }
     result = es.search(index="profiles", body=query_dict)
     results = result["hits"]["hits"]
+    if len(results) == 0:
+        return render(request, 'PrintProfileWithElasticsearch.html', context, status=404)
     context["data"] = results[0]["_source"]
-    print(context)
     return render(request, 'PrintProfileWithElasticsearch.html', context)
 
 
 class ProfileList(ListView):
     model = Profile
     template_name = "index.html"
+
     def get_queryset(self):
         queryset = []
         keyword = self.request.GET.get('keyword', "")
         es = Elasticsearch()
-        keyword = keyword.replace("-",r"\-")
+        keyword = keyword.replace("-", r"\-")
         query_dict = query_dict = {
             "size": 10000,
             "query": {
@@ -117,6 +118,7 @@ class ProfileList(ListView):
             result["source"] = old_key_result
         queryset = results
         return queryset
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['keyword'] = self.request.GET.get('keyword')
