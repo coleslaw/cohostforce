@@ -1,31 +1,3 @@
-<!--{% extends 'layout.html' %}
-
-{% load static %}
-
-{% block body %}
-    <div class="container">
-        <form method="get" class="search-bar" action="{% url 'main_site' %}" >
-            {% csrf_token %}
-            {% if keyword %}
-                <input type="text" placeholder="Search user" class="box" name="keyword" value="{{keyword}}">
-            {% else %}
-                <input type="text" placeholder="Search user" class="box" name="keyword">
-            {% endif %}
-        </form>
-        <table>
-            <tr class="box" >
-                <th>Username</th>
-            </tr>
-            {% for profile in object_list %}
-                <tr class="box" >
-                    <td><a href="{% url 'detail_site' pk=profile.id %}">{{profile}}</a></td>
-                </tr>
-            {% endfor %}
-        </table>
-    </div>
-{% endblock %}
--->
-
 {% extends 'layout.html' %}
 
 {% load static %}

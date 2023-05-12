@@ -1,13 +1,13 @@
 from django.core.management.base import BaseCommand
 from online_site.models import Profile , ContestResult
 from online_site.documents import ProfileDocument, ContestResultDocument
+from elasticsearch_dsl import Document, Integer, Text, Object
 import glob
 import pandas as pd
 import os
 from elasticsearch_dsl.connections import connections
-from elasticsearch_dsl import Document, Text, Integer
 
-connections.create_connection()
+
 def get_user(username):
     return Profile.objects.get(name=username)
 
@@ -59,11 +59,12 @@ def is_exist_contest_results(username, contest_name):
         return False
 
 def add_profiles(all_files):
+    connections.create_connection(
+        hosts=['https://elastic:xhBqmy8XqOYQSZYjspBVsnPK@daa681.es.us-east-1.aws.found.io']
+    )
     cnt = 0
     for file_path in all_files:
         name = get_file_name(file_path)
-        print(name)
-
         file_data = pd.read_csv(file_path, index_col=0)
         rating = get_rating(file_data)
         max_rating, best_title = get_max_rating_title(file_data)
@@ -96,6 +97,9 @@ def add_profiles(all_files):
 
 
 def add_contest_results(all_files):
+    connections.create_connection(
+        hosts=['https://elastic:xhBqmy8XqOYQSZYjspBVsnPK@daa681.es.us-east-1.aws.found.io']
+    )
     for file_path in all_files:
         username = get_file_name(file_path)
         '''user = get_user(username)'''

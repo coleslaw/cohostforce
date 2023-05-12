@@ -56,7 +56,11 @@ def my_func(**kwargs):
 
 
 def getDetailProfile(request, name):
-    es = Elasticsearch()
+    es = Elasticsearch(
+        ['https://daa681.es.us-east-1.aws.found.io'],  # thay đổi địa chỉ URL kết nối đến Elasticsearch
+        http_auth=('elastic', 'xhBqmy8XqOYQSZYjspBVsnPK'),  # thêm thông tin đăng nhập
+        scheme="https",
+    )
     query_dict = {
         "size": 10000,
         "query":
@@ -98,7 +102,12 @@ class ProfileList(ListView):
     def get_queryset(self):
         queryset = []
         keyword = self.request.GET.get('keyword', "")
-        es = Elasticsearch()
+        es = Elasticsearch(
+            ['https://daa681.es.us-east-1.aws.found.io'],  # thay đổi địa chỉ URL kết nối đến Elasticsearch
+            http_auth=('elastic', 'xhBqmy8XqOYQSZYjspBVsnPK'),  # thêm thông tin đăng nhập
+            scheme="https",
+            port=9243,
+        )
         keyword = keyword.replace("-", r"\-")
         query_dict = query_dict = {
             "size": 10000,
