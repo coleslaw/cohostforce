@@ -138,6 +138,6 @@ ELASTICSEARCH_DSL={
         'hosts': 'https://elastic:xhBqmy8XqOYQSZYjspBVsnPK@daa681.es.us-east-1.aws.found.io'
     },
 }
-#ALLOWED_HOSTS = ['cohostforce.herokuapp.com']
+ALLOWED_HOSTS = ['cohostforce.herokuapp.com']
 
 django_heroku.settings(locals())
