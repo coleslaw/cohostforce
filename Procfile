@@ -1,1 +1,1 @@
-web: gunicorn cohostforce.wsgi:application
+web: gunicorn cohostforce.wsgi
