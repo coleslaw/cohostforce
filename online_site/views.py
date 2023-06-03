@@ -109,7 +109,7 @@ class ProfileList(ListView):
             port=9243,
         )
         keyword = keyword.replace("-", r"\-")
-        query_dict = query_dict = {
+        query_dict =  {
             "size": 10000,
             "query": {
                 "query_string": {
