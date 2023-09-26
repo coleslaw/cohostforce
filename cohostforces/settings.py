@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/3.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
-
+import django_heroku
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -25,8 +25,6 @@ SECRET_KEY = 'django-insecure-4_0q_crtt%=b45g(8d^0t)fp**0!t(vk5#$ypc)9!8@#49=j=i
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
-
 
 # Application definition
 
@@ -39,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.humanize',
     'online_site',
+    'coverage',
 ]
 
 MIDDLEWARE = [
@@ -130,3 +129,13 @@ STATICFILES_DIRS = [
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# connect to elasticsearch
+ELASTICSEARCH_DSL={
+    'default': {
+        'hosts': 'https://elastic:xhBqmy8XqOYQSZYjspBVsnPK@daa681.es.us-east-1.aws.found.io'
+    },
+}
+ALLOWED_HOSTS = []
+
+django_heroku.settings(locals())

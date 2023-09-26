@@ -1,0 +1,21 @@
+{% extends 'layout.html' %}
+
+{% load static %}
+{% load humanize %}
+
+{% block body %}
+    <div class="profile">
+        <div class="profile-info">
+            <div class="name">Name: <a href="https://codeforces.com/profile/{{ data.name }}" > {{data.name}}</a> </div>
+            <div class="rating">Rating: {{data.rating}}</div>
+            <div class="title">Title: {{data.title}} <span> ( max, {{data.best_title}} , {{data.max_rating}} ) </span> </div>
+        </div>
+        <div class="chart">
+            <div class="chart-container">
+                <canvas id="result-chart">{{ contest_results|json_script:"contest_results" }}</canvas>
+            </div>
+        </div>
+    </div>
+    <!-- <a href="{% url 'main_site' %}" style="font-size:20px;" >View previous page</a> -->
+    <!-- {{ contest_results|json_script:"contest_results" }} -->
+{% endblock %}
